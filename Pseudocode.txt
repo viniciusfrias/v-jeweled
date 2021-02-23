@@ -1,0 +1,20 @@
+When the game is loaded on the browser, it will display a Start Button. It will stay listeninig for a click on it so it can proceed to render the game
+
+Player clicks on Start button which will call the render function
+
+The render function will callback a function to display the boardgame and its objects(there will be a logic to not allow more than 2 elements of same type next to each other), along with a callback function to start the countdown timer of 30seconds, and it will start listening for the player's move, if the timer gets to zero, at any point, the player loses the game which will call a funtion to display the message on the screen as well as a reset button that when clicked renders the game again 
+
+When the player selects two elements, there will be a control flow to make sure the elements are adjancent, in case they are not, the player is notified on the screen and the function is exited going back to listening mode. 
+If the objects selected have 2 or more of their type next to them in either a row or column, it will remove the row/column of same objects from the grid and another function is called to make the above objects to move down the same amount of spaces that became available. 
+In case the player selects 2 elements next to each other, they replace positions and a row of 3 or more elements is not found by the function, it will put the elements selected back to the same spot and exit the function to start listening again.
+
+If there are other matching elements once the row/column is removed as describred above it will continue to evaluate the presence of 3 or more elements of same type in a row/column  and it will remove the elements and putting the above pile down.
+
+whenever the player makes the elements combination it will call a function to add a score to the total and another function to increment time to the timer.
+
+After a certain amount of points is scored, the game ends and the player wins.
+
+Possible implementations
+I am thinking about also implementing the levels of difficulty by either reducing the timer or just making it faster
+There will be a Hint button which when clicked call a function that will work on top of the main function to evaluate possible combinations and it will be limited to 3 per level.
+The Theme Slide Button allows the board to show different characters such as Simpsons, Futurama, classic bejeweled, etc. So there will be a function for each one which will basically point to a differnte library of objects
