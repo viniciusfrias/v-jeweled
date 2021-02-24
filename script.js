@@ -10,7 +10,7 @@ let board = [
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0]]
-let selectedGems = [0,0]
+let selected = []
 //Cached elements
 let img0 = "<img class='images' src='/icons/image0.png' />";
 let img1 = "<img class='images' src='/icons/image1.png' />";
@@ -20,11 +20,45 @@ let img4 = "<img class='images' src='/icons/image4.png' />";
 let table = document.querySelector("table");
 
 // //Event listners
-document.querySelector('table').addEventListener('click', function(){
-    selectedGems[0] = document.querySelector
+document.querySelector('table').addEventListener('click', function(event){
+    if(event.target.parentNode.tagName !== 'TD'){
+        return
+    }
+    let clickedEl = event.target.parentNode
+    clickedEl.classList.toggle("applyBorder");
+    selected.push(clickedEl.id)
+    if(selected.length === 2){
+        switchGems()
+        render();
+        document.getElementById(selected[0]).classList.toggle("applyBorder");
+        document.getElementById(selected[1]).classList.toggle("applyBorder");
+        selected = [];
+    }
+      
 })
 
 //Functions
+function switchGems(){
+    let broker = 0;
+    let x1 = selected[0].split("_")[0][4];
+    let y1 = selected[0].split("_")[1];
+    let x2 = selected[1].split("_")[0][4];
+    let y2 = selected[1].split("_")[1];
+
+    if((x1 === x2) && (Math.abs(y1 - y2) === 1)){
+        broker = board[x1][y1];
+        board[x1][y1] = board[x2][y2]
+        board[x2][y2] = broker;
+    }
+    else if((y1 === y2) && (Math.abs(x1 - x2) === 1)){
+        broker = board[x1][y1];
+        board[x1][y1] = board[x2][y2]
+        board[x2][y2] = broker;
+    }
+    else{
+        alert("Not a valid move, try again please")
+    }    
+}
 
 //Function creates the table 8x8 using the board 2d array as a reference, sets an ID to each cell and assing a image html tag with the path to one of the gems images to be displayed
 function createTable(table, data) {
@@ -45,71 +79,84 @@ function createTable(table, data) {
 //Assigns a random number to variable "number", evaluates the numnber via a switch. Depending on the number it will generate, a specific image html tag containing
 //the path to one of the gems images will be assigned to the variable img and return the result to whatever called the function upon
 function assingRandomToCell(x,y) {
-    let number = Math.floor(5*Math.random());
-    let img = '';
+    let number = Math.floor(5 * Math.random());
+    board[x][y] = number;
+}
 
-    switch(number){
-        case 0:
-            img = img0;
-            break;
-        case 1:
-            img = img1;
-            break;
-        case 2:
-            img = img2;
-            break;
-        case 3:
-            img = img3;
-            break;
-        default:
-            img = img4;
-            break;
-    }
+function render(){
+    board.forEach((row,x) => {
+        row.forEach((cell, y) => {
+            let temp = document.getElementById(`cell${x}_${y}`)
 
-    return img;
+            switch(cell){
+                case 0:
+                    temp.innerHTML = img0;
+                    break;
+                case 1:
+                    temp.innerHTML = img1;
+                    break;
+                case 2:
+                    temp.innerHTML = img2;
+                    break;
+                case 3:
+                    temp.innerHTML = img3;
+                    break;
+                default:
+                    temp.innerHTML = img4;
+                    break;
+            }
+        });
+    });
 }
 
 //At start, it checks for more than 3 instances of the same gem on either a row or column.
 //If more than 3 are found, it replaces the one in the middle for another random one and runs the function again
 //until it gets to the desired setup
+let counter = 0;
 function checkCombAtStart() {
     let flag = false;
     for(let x = 0; x < board.length; x++) {
         for(let y = 0; y < board[x].length; y++) {
             if (y <= board[x].length - 3 &&
-                board[x][y].innerHTML === board[x][y+1].innerHTML &&
-                board[x][y].innerHTML === board[x][y+2].innerHTML && 
-                board[x][y+1].innerHTML === board[x][y+2].innerHTML) {
-                board[x][y+1].innerHTML = assingRandomToCell(x,y+1);
+                board[x][y] === board[x][y+1] &&
+                board[x][y] === board[x][y+2] && 
+                board[x][y+1] === board[x][y+2]) {
+                assingRandomToCell(x,y+1);
                 flag = true;
             }
             
             if (x <= board.length - 3 &&
-                board[x][y].innerHTML === board[x+1][y].innerHTML &&
-                board[x][y].innerHTML === board[x+2][y].innerHTML &&
-                board[x+1][y].innerHTML === board[x+2][y].innerHTML) {
-                board[x+1][y].innerHTML = assingRandomToCell(x+1,y);
+                board[x][y] === board[x+1][y] &&
+                board[x][y] === board[x+2][y] &&
+                board[x+1][y] === board[x+2][y]) {
+                assingRandomToCell(x+1,y);
                 flag = true;
             }
         }
     }
-
+    counter++;
     if (flag) {
         checkCombAtStart();
     }
 }
 
+function checkScoreComb(){
+    board.forEach((row,x) => {
+        row.forEach((cell, y) => {
+            if(board[x]){
+
+            }
+        });
+    });
+}
+
 //Initiates the table and gets the game ready to be played
 function initTable(){
     createTable(table, board);
-    assignElementToBoard();
     checkCombAtStart();
+    render();
 }
 
 //Root function to call the other functions
-function render(){
-    initTable();
-}
+initTable();
 
-//Rendering
-render();
