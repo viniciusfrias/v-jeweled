@@ -29,12 +29,13 @@ document.querySelector('table').addEventListener('click', function(event){
     selected.push(clickedEl.id)
     if(selected.length === 2){
         switchGems()
-        render();
+        
         document.getElementById(selected[0]).classList.toggle("applyBorder");
         document.getElementById(selected[1]).classList.toggle("applyBorder");
         selected = [];
-    }
-      
+        render();
+        checkScoreComb();
+    }      
 })
 
 //Functions
@@ -112,7 +113,6 @@ function render(){
 //At start, it checks for more than 3 instances of the same gem on either a row or column.
 //If more than 3 are found, it replaces the one in the middle for another random one and runs the function again
 //until it gets to the desired setup
-let counter = 0;
 function checkCombAtStart() {
     let flag = false;
     for(let x = 0; x < board.length; x++) {
@@ -134,7 +134,6 @@ function checkCombAtStart() {
             }
         }
     }
-    counter++;
     if (flag) {
         checkCombAtStart();
     }
@@ -143,11 +142,123 @@ function checkCombAtStart() {
 function checkScoreComb(){
     board.forEach((row,x) => {
         row.forEach((cell, y) => {
-            if(board[x]){
-
-            }
+            //the following if statements check for combinations rows of same index
+            if(y < board[x].length - 7 &&
+                board[x][y] === board[x][y + 1] && 
+                board[x][y] === board[x][y + 2] && 
+                board[x][y] === board[x][y + 3] && 
+                board[x][y] === board[x][y + 4] && 
+                board[x][y] === board[x][y + 5] && 
+                board[x][y] === board[x][y + 6] && 
+                board[x][y] === board[x][y + 7]){
+                    score += 1000;
+                    moveLinesDown(x, y, 8)
+                }
+            else if(y < board[x].length - 6 &&
+                board[x][y] === board[x][y + 1] && 
+                board[x][y] === board[x][y + 2] && 
+                board[x][y] === board[x][y + 3] && 
+                board[x][y] === board[x][y + 4] && 
+                board[x][y] === board[x][y + 5] && 
+                board[x][y] === board[x][y + 6]){
+                    score += 500;
+                    moveLinesDown(x, y, 7)
+                }
+            else if(y < board[x].length - 5 &&
+                board[x][y] === board[x][y + 1] && 
+                board[x][y] === board[x][y + 2] && 
+                board[x][y] === board[x][y + 3] && 
+                board[x][y] === board[x][y + 4] && 
+                board[x][y] === board[x][y + 5]){
+                    score += 400;
+                    moveLinesDown(x, y, 6)
+                }
+            else if(y < board[x].length - 4 &&
+                board[x][y] === board[x][y + 1] && 
+                board[x][y] === board[x][y + 2] && 
+                board[x][y] === board[x][y + 3] && 
+                board[x][y] === board[x][y + 4]){
+                    score += 200;
+                    moveLinesDown(x, y, 5)
+                }
+            else if(y < board[x].length - 3 &&
+                board[x][y] === board[x][y + 1] && 
+                board[x][y] === board[x][y + 2] && 
+                board[x][y] === board[x][y + 3]){
+                    score += 100;
+                    moveLinesDown(x, y, 4)
+                }
+            else if(y < board[x].length - 2 &&
+                board[x][y] === board[x][y + 1] && 
+                board[x][y] === board[x][y + 2]){
+                    score += 50;
+                    moveLinesDown(x, y, 3)
+                }
+            
+            //checks vor combinations in cells of same index
+            if(x < board.length - 7 &&
+                board[x][y] === board[x + 1][y] && 
+                board[x][y] === board[x + 2][y] && 
+                board[x][y] === board[x + 3][y] && 
+                board[x][y] === board[x + 4][y] && 
+                board[x][y] === board[x + 5][y] && 
+                board[x][y] === board[x + 6][y] && 
+                board[x][y] === board[x + 7][y]){
+                    score += 1000;
+                }
+            else if(x < board.length - 6 &&
+                board[x][y] === board[x + 1][y] && 
+                board[x][y] === board[x + 2][y] && 
+                board[x][y] === board[x + 3][y] && 
+                board[x][y] === board[x + 4][y] && 
+                board[x][y] === board[x + 5][y] && 
+                board[x][y] === board[x + 6][y]){
+                    score += 500;
+                }
+            else if(x < board.length - 5 &&
+                board[x][y] === board[x + 1][y] && 
+                board[x][y] === board[x + 2][y] && 
+                board[x][y] === board[x + 3][y] && 
+                board[x][y] === board[x + 4][y] && 
+                board[x][y] === board[x + 5][y]){
+                    score += 400;
+                }
+            else if(x < board.length - 4 &&
+                board[x][y] === board[x + 1][y] && 
+                board[x][y] === board[x + 2][y] && 
+                board[x][y] === board[x + 3][y] && 
+                board[x][y] === board[x + 4][y]){
+                    score += 200;
+                }
+            else if(x < board.length - 3 &&
+                board[x][y] === board[x + 1][y] && 
+                board[x][y] === board[x + 2][y] && 
+                board[x][y] === board[x + 3][y]){
+                    score += 100;
+                }
+            else if(x < board.length - 2 &&
+                board[x][y] === board[x + 1][y] && 
+                board[x][y] === board[x + 2][y]){
+                    score += 50;
+                }
+            render();
         });
     });
+}
+
+function moveLinesDown(x, y, maxIterations){
+    let max = y + maxIterations
+    for(y; y < max; y++){
+        if(x > 0){
+                for(let i = 0; i < x; i++){
+                    board[x - i][y] = board[x - i - 1][y];
+                }
+                assingRandomToCell(0,y)
+        }
+        else{
+                assingRandomToCell(0,y)
+        }
+    }
 }
 
 //Initiates the table and gets the game ready to be played
