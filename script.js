@@ -1,6 +1,7 @@
 //Variables
 let score = 0
-let timer = 30;
+let progress;
+let countdown;
 let board = [
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0],
@@ -11,11 +12,6 @@ let board = [
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0]]
 let selected = []
-// let counter = 30;
-// let timeGone = 0
-// let timeRemaining = 0;
-let progress;
-let countdown;
 
 //Cached elements
 let img0 = "<img class='images' src='/icons/image0.png' />";
@@ -45,24 +41,15 @@ document.querySelector('table').addEventListener('click', function(event){
     }      
 })
 
-//Functions
-function moveProgressBar() {
+document.getElementById('id-progress').addEventListener('click', function(event){
+    initTable();
     progress = 30;
-    countdown = setInterval(move, 1000);
-}
+    countdown = null;
+    score = 0;
+})
 
-function move(){
-    if(progress === 0){
-        clearInterval(countdown);
-    }
-    else{
-        progress--;
-        bar.setAttribute('value',progress);
-        document.getElementById('countdown').innerText = progress;
-    }
-}
-
-//Function creates the table 8x8 using the board 2d array as a reference, sets an ID to each cell and assing a image html tag with the path to one of the gems images to be displayed
+//Functions
+//Create the table dynamically and assign an id to all td elements and a number generated randomically by function "assignRandomCell()"
 function createTable(table, data) {
     for(let x = 0; x < data.length; x++) {
         let row = table.insertRow();
@@ -75,37 +62,6 @@ function createTable(table, data) {
     }
 }
 
-function addScore(){
-    document.getElementById("points").textContent = score;
-}
-
-function switchGems(){
-    let broker = 0;
-    let x1 = selected[0].split("_")[0][4];
-    let y1 = selected[0].split("_")[1];
-    let x2 = selected[1].split("_")[0][4];
-    let y2 = selected[1].split("_")[1];
-
-    if((x1 === x2) && (Math.abs(y1 - y2) === 1)){
-        broker = board[x1][y1];
-        board[x1][y1] = board[x2][y2]
-        board[x2][y2] = broker;
-    }
-    else if((y1 === y2) && (Math.abs(x1 - x2) === 1)){
-        broker = board[x1][y1];
-        board[x1][y1] = board[x2][y2]
-        board[x2][y2] = broker;
-    }
-    else{
-        alert("Not a valid move, try again please")
-    }    
-}
-
-
-
-//function to move the two selected elements over eeach others palceholders
-//board[0][0] = document.getElementById('cell0_0').innerHTML;
-
 //Assigns a random number to variable "number", evaluates the numnber via a switch. Depending on the number it will generate, a specific image html tag containing
 //the path to one of the gems images will be assigned to the variable img and return the result to whatever called the function upon
 function assingRandomToCell(x,y) {
@@ -113,6 +69,7 @@ function assingRandomToCell(x,y) {
     board[x][y] = number;
 }
 
+//This function render the gems(symbols) to each cell by referencing them to a random number from 0 to 4.
 function render(){
     board.forEach((row,x) => {
         row.forEach((cell, y) => {
@@ -168,10 +125,58 @@ function checkCombAtStart() {
     }
 }
 
+//This function sets the timer interval to 30 seconds
+function moveProgressBar() {
+    progress = 30;
+    countdown = setInterval(move, 1000);
+}
+
+//This function changes the timer bar to reflect the seconds passed
+function move(){
+    if(progress === 0){
+        clearInterval(countdown);
+        document.getElementById('countdown').innerText = "Game Over";
+        let resetButton = document.createElement("BUTTON");
+        resetButton.innerText = "Click here to reset the game";
+        resetButton.setAttribute('id','reset-button')
+        document.getElementById('id-progress').replaceChild(resetButton,document.getElementById('progress-bar'));
+    }
+    else{
+        progress--;
+        bar.setAttribute('value',progress);
+        document.getElementById('countdown').innerText = progress;
+    }
+}
+
+//This function makes the switch of gems when player selects 2 gems that are next to each other
+function switchGems(){
+    let broker = 0;
+    let x1 = selected[0].split("_")[0][4];
+    let y1 = selected[0].split("_")[1];
+    let x2 = selected[1].split("_")[0][4];
+    let y2 = selected[1].split("_")[1];
+
+    if((x1 === x2) && (Math.abs(y1 - y2) === 1)){
+        broker = board[x1][y1];
+        board[x1][y1] = board[x2][y2]
+        board[x2][y2] = broker;
+    }
+    else if((y1 === y2) && (Math.abs(x1 - x2) === 1)){
+        broker = board[x1][y1];
+        board[x1][y1] = board[x2][y2]
+        board[x2][y2] = broker;
+    }
+    else{
+        alert("Not a valid move, try again please")
+    }    
+}
+
+//This function checks the score board for the possible combinations that could be a score combination
 function checkScoreComb(){
     board.forEach((row,x) => {
         row.forEach((cell, y) => {
-            //the following if statements check for combinations rows of same index
+            //the following if statements check for combinations rows of same index, adds a score, moves the block of elements that are above the combination down one position
+            //and check for another possible score combination that showed up after the elements were moved
             if(y < board[x].length - 7 &&
                 board[x][y] === board[x][y + 1] && 
                 board[x][y] === board[x][y + 2] && 
@@ -231,7 +236,8 @@ function checkScoreComb(){
                     checkScoreComb();
                 }
             
-            //checks vor combinations in cells of same index
+            //checks vor combinations in cells of same index, adds a score, moves the column of elements that are above the combination down the number of  positions the previous
+            //score had and check for another possible score combination that showed up after the elements were moved
             if(x < board.length - 7 &&
                 board[x][y] === board[x + 1][y] && 
                 board[x][y] === board[x + 2][y] && 
@@ -294,6 +300,7 @@ function checkScoreComb(){
     });
 }
 
+//Function to move the line or block of lines down once there was a row score
 function moveLinesDown(x, y, maxIterations){
     let max = y + maxIterations
     for(y; y < max; y++){
@@ -309,6 +316,7 @@ function moveLinesDown(x, y, maxIterations){
     }
 }
 
+//Function to move the elements of a column down once there was a columns score
 function moveOnelineDown(x,y){
     if(x > 0){
         for(let i = 0; i < x; i++){
@@ -320,12 +328,17 @@ function moveOnelineDown(x,y){
         assingRandomToCell(0,y)
     }
 }
+
+//This function renders the current score to the html elements
+function addScore(){
+    document.getElementById("points").textContent = score;
+}
+
 //Initiates the table and gets the game ready to be played
 function initTable(){
     createTable(table, board);
     checkCombAtStart();
     render();
-    // applyCountdownTimer();
     moveProgressBar()
 }
 
