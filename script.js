@@ -1,5 +1,5 @@
 //Variables
-let score = 0;
+let score = 0
 let timer = 30;
 let board = [
             [0,0,0,0,0,0,0,0],
@@ -11,6 +11,12 @@ let board = [
             [0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0]]
 let selected = []
+// let counter = 30;
+// let timeGone = 0
+// let timeRemaining = 0;
+let progress;
+let countdown;
+
 //Cached elements
 let img0 = "<img class='images' src='/icons/image0.png' />";
 let img1 = "<img class='images' src='/icons/image1.png' />";
@@ -18,6 +24,7 @@ let img2 = "<img class='images' src='/icons/image2.png' />";
 let img3 = "<img class='images' src='/icons/image3.png' />";
 let img4 = "<img class='images' src='/icons/image4.png' />";
 let table = document.querySelector("table");
+let bar = document.getElementById("progress-bar")
 
 // //Event listners
 document.querySelector('table').addEventListener('click', function(event){
@@ -39,6 +46,39 @@ document.querySelector('table').addEventListener('click', function(event){
 })
 
 //Functions
+function moveProgressBar() {
+    progress = 30;
+    countdown = setInterval(move, 1000);
+}
+
+function move(){
+    if(progress === 0){
+        clearInterval(countdown);
+    }
+    else{
+        progress--;
+        bar.setAttribute('value',progress);
+        document.getElementById('countdown').innerText = progress;
+    }
+}
+
+//Function creates the table 8x8 using the board 2d array as a reference, sets an ID to each cell and assing a image html tag with the path to one of the gems images to be displayed
+function createTable(table, data) {
+    for(let x = 0; x < data.length; x++) {
+        let row = table.insertRow();
+
+        for(let y = 0; y < data[x].length; y++) {
+            let cell = row.insertCell();
+            cell.setAttribute('id', `cell${x}_${y}`);
+            cell.innerHTML = assingRandomToCell(x,y);
+        }
+    }
+}
+
+function addScore(){
+    document.getElementById("points").textContent = score;
+}
+
 function switchGems(){
     let broker = 0;
     let x1 = selected[0].split("_")[0][4];
@@ -61,18 +101,7 @@ function switchGems(){
     }    
 }
 
-//Function creates the table 8x8 using the board 2d array as a reference, sets an ID to each cell and assing a image html tag with the path to one of the gems images to be displayed
-function createTable(table, data) {
-    for(let x = 0; x < data.length; x++) {
-        let row = table.insertRow();
 
-        for(let y = 0; y < data[x].length; y++) {
-            let cell = row.insertCell();
-            cell.setAttribute('id', `cell${x}_${y}`);
-            cell.innerHTML = assingRandomToCell(x,y);
-        }
-    }
-}
 
 //function to move the two selected elements over eeach others palceholders
 //board[0][0] = document.getElementById('cell0_0').innerHTML;
@@ -152,7 +181,8 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 6] && 
                 board[x][y] === board[x][y + 7]){
                     score += 1000;
-                    moveLinesDown(x, y, 8)
+                    moveLinesDown(x, y, 8);
+                    checkScoreComb();
                 }
             else if(y < board[x].length - 6 &&
                 board[x][y] === board[x][y + 1] && 
@@ -162,7 +192,8 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 5] && 
                 board[x][y] === board[x][y + 6]){
                     score += 500;
-                    moveLinesDown(x, y, 7)
+                    moveLinesDown(x, y, 7);
+                    checkScoreComb();
                 }
             else if(y < board[x].length - 5 &&
                 board[x][y] === board[x][y + 1] && 
@@ -171,7 +202,8 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 4] && 
                 board[x][y] === board[x][y + 5]){
                     score += 400;
-                    moveLinesDown(x, y, 6)
+                    moveLinesDown(x, y, 6);
+                    checkScoreComb();
                 }
             else if(y < board[x].length - 4 &&
                 board[x][y] === board[x][y + 1] && 
@@ -179,20 +211,24 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 3] && 
                 board[x][y] === board[x][y + 4]){
                     score += 200;
-                    moveLinesDown(x, y, 5)
+                    moveLinesDown(x, y, 5);
+                    checkScoreComb();
                 }
             else if(y < board[x].length - 3 &&
                 board[x][y] === board[x][y + 1] && 
                 board[x][y] === board[x][y + 2] && 
                 board[x][y] === board[x][y + 3]){
                     score += 100;
-                    moveLinesDown(x, y, 4)
+                    moveLinesDown(x, y, 4);
+                    checkScoreComb();
                 }
             else if(y < board[x].length - 2 &&
                 board[x][y] === board[x][y + 1] && 
                 board[x][y] === board[x][y + 2]){
                     score += 50;
-                    moveLinesDown(x, y, 3)
+                    addScore();
+                    moveLinesDown(x, y, 3);
+                    checkScoreComb();
                 }
             
             //checks vor combinations in cells of same index
@@ -205,6 +241,8 @@ function checkScoreComb(){
                 board[x][y] === board[x + 6][y] && 
                 board[x][y] === board[x + 7][y]){
                     score += 1000;
+                    moveOnelineDown(x,y);
+                    checkScoreComb();
                 }
             else if(x < board.length - 6 &&
                 board[x][y] === board[x + 1][y] && 
@@ -214,6 +252,8 @@ function checkScoreComb(){
                 board[x][y] === board[x + 5][y] && 
                 board[x][y] === board[x + 6][y]){
                     score += 500;
+                    moveOnelineDown(x,y);
+                    checkScoreComb();
                 }
             else if(x < board.length - 5 &&
                 board[x][y] === board[x + 1][y] && 
@@ -222,6 +262,8 @@ function checkScoreComb(){
                 board[x][y] === board[x + 4][y] && 
                 board[x][y] === board[x + 5][y]){
                     score += 400;
+                    moveOnelineDown(x,y);
+                    checkScoreComb();
                 }
             else if(x < board.length - 4 &&
                 board[x][y] === board[x + 1][y] && 
@@ -229,17 +271,23 @@ function checkScoreComb(){
                 board[x][y] === board[x + 3][y] && 
                 board[x][y] === board[x + 4][y]){
                     score += 200;
+                    moveOnelineDown(x,y);
+                    checkScoreComb();
                 }
             else if(x < board.length - 3 &&
                 board[x][y] === board[x + 1][y] && 
                 board[x][y] === board[x + 2][y] && 
                 board[x][y] === board[x + 3][y]){
                     score += 100;
+                    moveOnelineDown(x,y);
+                    checkScoreComb();
                 }
             else if(x < board.length - 2 &&
                 board[x][y] === board[x + 1][y] && 
                 board[x][y] === board[x + 2][y]){
                     score += 50;
+                    moveOnelineDown(x,y);
+                    checkScoreComb();
                 }
             render();
         });
@@ -261,11 +309,24 @@ function moveLinesDown(x, y, maxIterations){
     }
 }
 
+function moveOnelineDown(x,y){
+    if(x > 0){
+        for(let i = 0; i < x; i++){
+            board[x - i][y] = board[x - i - 1][y];
+        }
+        assingRandomToCell(0,y)
+    }
+    else{
+        assingRandomToCell(0,y)
+    }
+}
 //Initiates the table and gets the game ready to be played
 function initTable(){
     createTable(table, board);
     checkCombAtStart();
     render();
+    // applyCountdownTimer();
+    moveProgressBar()
 }
 
 //Root function to call the other functions
