@@ -18,11 +18,11 @@ let progress;
 let countdown;
 
 //Cached elements
-let img0 = "<img class='images' src='/icons/image0.png' />";
-let img1 = "<img class='images' src='/icons/image1.png' />";
-let img2 = "<img class='images' src='/icons/image2.png' />";
-let img3 = "<img class='images' src='/icons/image3.png' />";
-let img4 = "<img class='images' src='/icons/image4.png' />";
+let img0 = "<img class='images' src='./icons/image0.png' />";
+let img1 = "<img class='images' src='./icons/image1.png' />";
+let img2 = "<img class='images' src='./icons/image2.png' />";
+let img3 = "<img class='images' src='./icons/image3.png' />";
+let img4 = "<img class='images' src='./icons/image4.png' />";
 let table = document.querySelector("table");
 let bar = document.getElementById("progress-bar")
 
