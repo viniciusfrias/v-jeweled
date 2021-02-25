@@ -14,7 +14,7 @@ Project is created with:
 * Javascript
 
 ## Game link
-![Alt text](https://viniciusfrias.github.io/v-jeweled/)
+[Game Link](https://viniciusfrias.github.io/v-jeweled/)
 
 ## Game Rules
 
