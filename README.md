@@ -14,7 +14,7 @@ Project is created with:
 * Javascript
 
 ## Game link
-https://pages.git.generalassemb.ly/terencet/Black-Jack-Project-1/
+
 
 ## Game Rules
 
