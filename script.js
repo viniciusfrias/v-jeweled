@@ -126,7 +126,7 @@ function checkCombAtStart() {
 
 //This function sets the timer interval to 30 seconds
 function moveProgressBar() {
-    progress = 30;
+    progress = 60;
     countdown = setInterval(move, 1000);
 }
 
