@@ -28,4 +28,4 @@ Project is created with:
 * Hint button to display possible hints if player can't find gems to switch
 * A slide button to make the game more fun and display different characters on the board instead of regular gems and diamonds
 * Development to other display sizes.
-* make it more difficult, either faster or less options for player.
+* Make it more difficult, either faster or less options for player.
