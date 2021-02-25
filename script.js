@@ -21,6 +21,10 @@ let img3 = "<img class='images' src='https://viniciusfrias.github.io/v-jeweled//
 let img4 = "<img class='images' src='https://viniciusfrias.github.io/v-jeweled//icons/image4.png' />";
 let table = document.querySelector("table");
 let bar = document.getElementById("progress-bar")
+let resetButton = document.createElement("BUTTON");
+resetButton.innerText = "Click here to reset the game";
+resetButton.setAttribute('id','reset-button')
+
 
 // //Event listners
 document.querySelector('table').addEventListener('click', function(event){
@@ -41,12 +45,7 @@ document.querySelector('table').addEventListener('click', function(event){
     }      
 })
 
-document.getElementById('id-progress').addEventListener('click', function(event){
-    initTable();
-    progress = 30;
-    countdown = null;
-    score = 0;
-})
+
 
 //Functions
 //Create the table dynamically and assign an id to all td elements and a number generated randomically by function "assignRandomCell()"
@@ -136,10 +135,10 @@ function move(){
     if(progress === 0){
         clearInterval(countdown);
         document.getElementById('countdown').innerText = "Game Over";
-        let resetButton = document.createElement("BUTTON");
-        resetButton.innerText = "Click here to reset the game";
-        resetButton.setAttribute('id','reset-button')
         document.getElementById('id-progress').replaceChild(resetButton,document.getElementById('progress-bar'));
+        document.getElementById('id-progress').addEventListener('click', function(event){
+            window.location.reload();
+        })
     }
     else{
         progress--;
@@ -292,6 +291,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 1][y] && 
                 board[x][y] === board[x + 2][y]){
                     score += 50;
+                    console.log("moving x - 1 in if statemen",x)
                     moveOnelineDown(x,y);
                     checkScoreComb();
                 }
@@ -317,18 +317,35 @@ function moveLinesDown(x, y, maxIterations){
 }
 
 //Function to move the elements of a column down once there was a columns score
-function moveOnelineDown(x,y){
-    if(x > 0){
-        for(let i = 0; i < x; i++){
-            board[x - i][y] = board[x - i - 1][y];
+function moveOnelineDown(x,y,maxIterations){
+    if(maxIterations === 8){
+        for(i = 0; i < 8; i++){
+            assingRandomToCell(x,y)
         }
-        assingRandomToCell(0,y)
     }
-    else{
-        assingRandomToCell(0,y)
+    else if(maxIterations === 7){
+        for(i = 0; i < maxIterations; i++){
+            if(x>0){
+                board[x + maxIterations - 1][y] = board[x - 1][y]
+            }
+            else{
+                for(j = 0; j < maxIterations; j++){
+                    assingRandomToCell(x + j,y)
+                }
+            }
+        }
+    }
+    else if(maxIterations === 6){
+        if(x>0){
+           
+        }
+        else{
+            for(j = 0; j < maxIterations; j++){
+                assingRandomToCell(x+j,y);
+            }
+        }
     }
 }
-
 //This function renders the current score to the html elements
 function addScore(){
     document.getElementById("points").textContent = score;

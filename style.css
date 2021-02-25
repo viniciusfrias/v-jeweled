@@ -30,9 +30,9 @@ body{
 #score{
     background: linear-gradient(to right bottom, rgba(255,255,255,0.6),rgba(255,255,255,0));
     border: solid rgba(255,255,255,0.2) 15px;
-    color: rgba(255, 0, 0, 0.507);
+    color: rgba(255, 0, 0, 0.507);  
     display: inline;
-    font-size: 100px;
+    font-size: 20px;
     text-align: center;
     border-radius: 25%;
     width: 9%;
@@ -47,9 +47,9 @@ h1{
     margin: auto;
     color: rgba(255, 0, 0, 0.507);
     font-family: 'Arcade';
-    font-size: 130px;
+    font-size: 40px;
     text-align: center;
-    width: 33vw;    
+    width: 50vw;    
 }
 
 #countdown{
@@ -69,17 +69,18 @@ table{
 
 #timer{
  color: red;
- font-size: 130px;
+ font-size: 25px;
  display: flex;
  flex-direction:column;
- justify-content:flex-start;
+ justify-content:space-between;
  align-items:center;
- height: 15%;
+ height: 10vh;
  text-align: center;
 }
 
 #countdown{
     color: rgba(255, 0, 0, 0.507);
+    font-size: 25px;
 }
 
 td{
@@ -108,7 +109,7 @@ progress[value]{
     display: block;
     margin: 0 auto;
     height: 6vh;
-    font-size: 60px;
+    font-size: 10px;
     color: rgba(255, 0, 0, 0.507);
     font-family: 'Arcade';
     background: linear-gradient(to right bottom, rgba(255,255,255,0.6),rgba(255,255,255,0));
@@ -132,14 +133,14 @@ body{
     justify-content: space-around;
 }
 #score{
-    font-size: 15px;
-    width: 30%;
+    font-size: 30px;
+    width: 40%;
     height: auto;
 }
 
 h1{
     font-size: 7vmin;
-    width: 100vw;
+    width: 70vw;
 }
 
 #timer{
@@ -166,7 +167,7 @@ td{
 
 #score-text{
     font-family: 'Arcade';
-    font-size: 12px;
+    font-size: 20px;
 }
 
 progress[value]{
