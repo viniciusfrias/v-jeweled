@@ -137,7 +137,7 @@ function move(){
         document.getElementById('countdown').innerText = "Game Over";
         document.getElementById('id-progress').replaceChild(resetButton,document.getElementById('progress-bar'));
         document.getElementById('id-progress').addEventListener('click', function(event){
-            window.location.reload();
+        window.location.reload();
         })
     }
     else{
@@ -185,6 +185,7 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 6] && 
                 board[x][y] === board[x][y + 7]){
                     score += 1000;
+                    addScore();
                     moveLinesDown(x, y, 8);
                     checkScoreComb();
                 }
@@ -196,6 +197,7 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 5] && 
                 board[x][y] === board[x][y + 6]){
                     score += 500;
+                    addScore();
                     moveLinesDown(x, y, 7);
                     checkScoreComb();
                 }
@@ -206,6 +208,7 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 4] && 
                 board[x][y] === board[x][y + 5]){
                     score += 400;
+                    addScore();
                     moveLinesDown(x, y, 6);
                     checkScoreComb();
                 }
@@ -215,6 +218,7 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 3] && 
                 board[x][y] === board[x][y + 4]){
                     score += 200;
+                    addScore();
                     moveLinesDown(x, y, 5);
                     checkScoreComb();
                 }
@@ -223,6 +227,7 @@ function checkScoreComb(){
                 board[x][y] === board[x][y + 2] && 
                 board[x][y] === board[x][y + 3]){
                     score += 100;
+                    addScore();
                     moveLinesDown(x, y, 4);
                     checkScoreComb();
                 }
@@ -246,6 +251,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 6][y] && 
                 board[x][y] === board[x + 7][y]){
                     score += 1000;
+                    addScore();
                     moveOnelineDown(x,y,7);
                     checkScoreComb();
                 }
@@ -257,6 +263,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 5][y] && 
                 board[x][y] === board[x + 6][y]){
                     score += 500;
+                    addScore();
                     moveOnelineDown(x,y,6);
                     checkScoreComb();
                 }
@@ -267,6 +274,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 4][y] && 
                 board[x][y] === board[x + 5][y]){
                     score += 400;
+                    addScore();
                     moveOnelineDown(x,y,5);
                     checkScoreComb();
                 }
@@ -276,6 +284,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 3][y] && 
                 board[x][y] === board[x + 4][y]){
                     score += 200;
+                    addScore();
                     moveOnelineDown(x,y,4);
                     checkScoreComb();
                 }
@@ -284,6 +293,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 2][y] && 
                 board[x][y] === board[x + 3][y]){
                     score += 100;
+                    addScore();
                     moveOnelineDown(x,y,3);
                     checkScoreComb();
                 }
@@ -291,6 +301,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 1][y] && 
                 board[x][y] === board[x + 2][y]){
                     score += 50;
+                    addScore();
                     moveOnelineDown(x,y,2);
                     checkScoreComb();
                 }
