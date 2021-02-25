@@ -246,7 +246,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 6][y] && 
                 board[x][y] === board[x + 7][y]){
                     score += 1000;
-                    moveOnelineDown(x,y);
+                    moveOnelineDown(x,y,7);
                     checkScoreComb();
                 }
             else if(x < board.length - 6 &&
@@ -257,7 +257,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 5][y] && 
                 board[x][y] === board[x + 6][y]){
                     score += 500;
-                    moveOnelineDown(x,y);
+                    moveOnelineDown(x,y,6);
                     checkScoreComb();
                 }
             else if(x < board.length - 5 &&
@@ -267,7 +267,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 4][y] && 
                 board[x][y] === board[x + 5][y]){
                     score += 400;
-                    moveOnelineDown(x,y);
+                    moveOnelineDown(x,y,5);
                     checkScoreComb();
                 }
             else if(x < board.length - 4 &&
@@ -276,7 +276,7 @@ function checkScoreComb(){
                 board[x][y] === board[x + 3][y] && 
                 board[x][y] === board[x + 4][y]){
                     score += 200;
-                    moveOnelineDown(x,y);
+                    moveOnelineDown(x,y,4);
                     checkScoreComb();
                 }
             else if(x < board.length - 3 &&
@@ -284,15 +284,14 @@ function checkScoreComb(){
                 board[x][y] === board[x + 2][y] && 
                 board[x][y] === board[x + 3][y]){
                     score += 100;
-                    moveOnelineDown(x,y);
+                    moveOnelineDown(x,y,3);
                     checkScoreComb();
                 }
             else if(x < board.length - 2 &&
                 board[x][y] === board[x + 1][y] && 
                 board[x][y] === board[x + 2][y]){
                     score += 50;
-                    console.log("moving x - 1 in if statemen",x)
-                    moveOnelineDown(x,y);
+                    moveOnelineDown(x,y,2);
                     checkScoreComb();
                 }
             render();
@@ -318,31 +317,16 @@ function moveLinesDown(x, y, maxIterations){
 
 //Function to move the elements of a column down once there was a columns score
 function moveOnelineDown(x,y,maxIterations){
-    if(maxIterations === 8){
-        for(i = 0; i < 8; i++){
-            assingRandomToCell(x,y)
+    if(x > 0){
+        let max = x + maxIterations;
+        for(i = 0; i <= x - 1;i++){
+            board[max - i][y] = board[(x - 1) - i][y];
         }
+        assingRandomToCell(0,y);        
     }
-    else if(maxIterations === 7){
-        for(i = 0; i < maxIterations; i++){
-            if(x>0){
-                board[x + maxIterations - 1][y] = board[x - 1][y]
-            }
-            else{
-                for(j = 0; j < maxIterations; j++){
-                    assingRandomToCell(x + j,y)
-                }
-            }
-        }
-    }
-    else if(maxIterations === 6){
-        if(x>0){
-           
-        }
-        else{
-            for(j = 0; j < maxIterations; j++){
-                assingRandomToCell(x+j,y);
-            }
+    if(x === 0){
+        for(j = 0; j <= maxIterations; j++){
+            assingRandomToCell(j,y);
         }
     }
 }
