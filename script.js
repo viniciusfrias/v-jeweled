@@ -18,7 +18,7 @@ let progress;
 let countdown;
 
 //Cached elements
-let img0 = "<img class='images' src='./icons/image0.png' />";
+let img0 = "<img class='images' src='https://viniciusfrias.github.io/v-jeweled/icons/image0.png' />";
 let img1 = "<img class='images' src='./icons/image1.png' />";
 let img2 = "<img class='images' src='./icons/image2.png' />";
 let img3 = "<img class='images' src='./icons/image3.png' />";
